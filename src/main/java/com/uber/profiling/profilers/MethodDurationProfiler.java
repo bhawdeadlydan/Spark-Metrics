@@ -36,6 +36,7 @@ public class MethodDurationProfiler extends ProcessInfoBase implements Profiler 
     private long intervalMillis = Constants.DEFAULT_METRIC_INTERVAL;
 
     public MethodDurationProfiler(ClassAndMethodLongMetricBuffer buffer, Reporter reporter) {
+        System.out.println("==========Reaching MethodDurationProfiler constructor");
         this.buffer = buffer;
         this.reporter = reporter;
     }

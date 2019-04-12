@@ -45,7 +45,7 @@ public class InfluxDBOutputReporter implements Reporter {
     private static final AgentLogger logger = AgentLogger.getLogger(InfluxDBOutputReporter.class.getName());
     private InfluxDB influxDB = null;
     // InfluxDB default connection properties
-    private String host = "127.0.0.1";
+    private String host = "localhost";
     private String port = "8086";
     private String database = "metrics";
     private String username = "admin";

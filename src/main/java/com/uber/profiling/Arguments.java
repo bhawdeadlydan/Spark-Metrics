@@ -16,13 +16,9 @@
 
 package com.uber.profiling;
 
+import com.uber.profiling.profilers.Constants;
 import com.uber.profiling.reporters.ConsoleOutputReporter;
-import com.uber.profiling.util.AgentLogger;
-import com.uber.profiling.util.ClassAndMethod;
-import com.uber.profiling.util.ClassMethodArgument;
-import com.uber.profiling.util.DummyConfigProvider;
-import com.uber.profiling.util.JsonUtils;
-import com.uber.profiling.util.ReflectionUtils;
+import com.uber.profiling.util.*;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -49,6 +45,7 @@ public class Arguments {
     public final static String ARG_ARGUMENT_PROFILING = "argumentProfiling";
     
     public final static String ARG_IO_PROFILING = "ioProfiling";
+    public final static String IS_DRIVER = "driver";
 
     public static final long MIN_INTERVAL_MILLIS = 50;
 
@@ -69,6 +66,7 @@ public class Arguments {
     private String tag;
     private String cluster;
     private boolean ioProfiling;
+    private boolean isDriver;
 
     private List<ClassAndMethod> durationProfiling = new ArrayList<>();
     private List<ClassMethodArgument> argumentProfiling = new ArrayList<>();
@@ -226,6 +224,13 @@ public class Arguments {
             ioProfiling = Boolean.parseBoolean(argValue);
             logger.info("Got argument value for ioProfiling: " + ioProfiling);
         }
+
+        argValue = ArgumentUtils.getArgumentSingleValue(parsedArgs, IS_DRIVER);
+        if (ArgumentUtils.needToUpdateArg(argValue)) {
+            isDriver = Boolean.parseBoolean(argValue);
+            System.out.println("Driver value"+isDriver);
+            logger.info("Got argument value for isDriver: " + isDriver);
+        }
     }
     
     public void runConfigProvider() {
@@ -343,6 +348,13 @@ public class Arguments {
 
     public boolean isIoProfiling() {
         return ioProfiling;
+    }
+    public String getDriver() {
+        if(isDriver) {
+            return Constants.DRIVER_ROLE;
+        }else  {
+            return Constants.EXECUTOR_ROLE;
+        }
     }
 
 }

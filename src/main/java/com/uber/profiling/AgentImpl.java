@@ -144,6 +144,7 @@ public class AgentImpl {
         cpuAndMemoryProfiler.setIntervalMillis(metricInterval);
         cpuAndMemoryProfiler.setProcessUuid(processUuid);
         cpuAndMemoryProfiler.setAppId(appId);
+        cpuAndMemoryProfiler.setRole(arguments.getDriver());
 
         profilers.add(cpuAndMemoryProfiler);
 
@@ -152,18 +153,21 @@ public class AgentImpl {
         processInfoProfiler.setCluster(cluster);
         processInfoProfiler.setProcessUuid(processUuid);
         processInfoProfiler.setAppId(appId);
+        processInfoProfiler.setRole(arguments.getDriver());
 
         profilers.add(processInfoProfiler);
 
         if (!arguments.getDurationProfiling().isEmpty()) {
             ClassAndMethodLongMetricBuffer classAndMethodMetricBuffer = new ClassAndMethodLongMetricBuffer();
 
+            System.out.println("================= ");
             MethodDurationProfiler methodDurationProfiler = new MethodDurationProfiler(classAndMethodMetricBuffer, reporter);
             methodDurationProfiler.setTag(tag);
             methodDurationProfiler.setCluster(cluster);
             methodDurationProfiler.setIntervalMillis(metricInterval);
             methodDurationProfiler.setProcessUuid(processUuid);
             methodDurationProfiler.setAppId(appId);
+            methodDurationProfiler.setRole(arguments.getDriver());
 
             MethodDurationCollector methodDurationCollector = new MethodDurationCollector(classAndMethodMetricBuffer);
             MethodProfilerStaticProxy.setCollector(methodDurationCollector);
@@ -192,7 +196,7 @@ public class AgentImpl {
 
             StacktraceCollectorProfiler stacktraceCollectorProfiler = new StacktraceCollectorProfiler(stacktraceMetricBuffer, AgentThreadFactory.NAME_PREFIX);
             stacktraceCollectorProfiler.setIntervalMillis(arguments.getSampleInterval());
-                    
+//            stacktraceCollectorProfiler.set(arguments.getDriver());
             StacktraceReporterProfiler stacktraceReporterProfiler = new StacktraceReporterProfiler(stacktraceMetricBuffer, reporter);
             stacktraceReporterProfiler.setTag(tag);
             stacktraceReporterProfiler.setCluster(cluster);
@@ -206,6 +210,7 @@ public class AgentImpl {
 
         if (arguments.isIoProfiling()) {
             IOProfiler ioProfiler = new IOProfiler(reporter);
+            ioProfiler.setRole(arguments.getDriver());
             ioProfiler.setTag(tag);
             ioProfiler.setCluster(cluster);
             ioProfiler.setIntervalMillis(metricInterval);

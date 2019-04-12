@@ -109,7 +109,6 @@ public class ProcessInfoBase {
         if (role != null && !role.isEmpty()) {
             return role;
         }
-        
         String cmdline = ProcFileUtils.getCmdline();
         role = SparkUtils.probeRole(cmdline);
         return role;
