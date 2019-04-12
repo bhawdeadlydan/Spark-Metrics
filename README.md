@@ -90,6 +90,10 @@ The java agent supports following parameters, which could be used in Java comman
 
 - outputDir: output directory if using com.uber.profiling.reporters.FileOutputReporter. FileOutputReporter will write metrics into this directory.
 
+## How to run in Spark 
+
+spark-submit --master spark://BNG-186575-C02Y80Y3JGH8:7077 --conf "spark.driver.extraJavaOptions=-javaagent:/Users/magadi.sudhindra/uberprofiler/jvm-profiler/target/jvm-profiler-1.0.0.jar=reporter=com.uber.profiling.reporters.InfluxDBOutputReporter,metricInterval=5000,configProvider=com.uber.profiling.YamlConfigProvider,configFile=/Users/magadi.sudhindra/uberprofiler/jvm-profiler/influxdb.yaml,sampleInterval=5000,ioProfiling=true,driver=true" --conf "spark.executor.extraJavaOptions=-javaagent:/Users/magadi.sudhindra/uberprofiler/jvm-profiler/target/jvm-profiler-1.0.0.jar=reporter=com.uber.profiling.reporters.InfluxDBOutputReporter,configProvider=com.uber.profiling.YamlConfigProvider,configFile=/Users/magadi.sudhindra/uberprofiler/jvm-profiler/influxdb.yaml,metricInterval=5000,sampleInterval=5000,ioProfiling=true,driver=false" --class org.apache.spark.examples.streaming.JavaSqlNetworkWordCount ../examples/jars/spark-examples_2.11-2.4.0.jar localhost 9999
+
 ## Metrics Example
 
 Following is an example of CPU and Memory metrics when using ConsoleOutputReporter or KafkaOutputReporter:
@@ -208,8 +212,5 @@ We can take the output of Stacktrack Profiling to generate flamegraph to visuali
 python stackcollapse.py -i Stacktrace.json > Stacktrace.folded
 flamegraph.pl Stacktrace.folded > Stacktrace.svg
 
-## How to run in Spark 
-
-spark-submit --master spark://BNG-186575-C02Y80Y3JGH8:7077 --conf "spark.driver.extraJavaOptions=-javaagent:/Users/magadi.sudhindra/uberprofiler/jvm-profiler/target/jvm-profiler-1.0.0.jar=reporter=com.uber.profiling.reporters.InfluxDBOutputReporter,metricInterval=5000,configProvider=com.uber.profiling.YamlConfigProvider,configFile=/Users/magadi.sudhindra/uberprofiler/jvm-profiler/influxdb.yaml,sampleInterval=5000,ioProfiling=true,driver=true" --conf "spark.executor.extraJavaOptions=-javaagent:/Users/magadi.sudhindra/uberprofiler/jvm-profiler/target/jvm-profiler-1.0.0.jar=reporter=com.uber.profiling.reporters.InfluxDBOutputReporter,configProvider=com.uber.profiling.YamlConfigProvider,configFile=/Users/magadi.sudhindra/uberprofiler/jvm-profiler/influxdb.yaml,metricInterval=5000,sampleInterval=5000,ioProfiling=true,driver=false" --class org.apache.spark.examples.streaming.JavaSqlNetworkWordCount ../examples/jars/spark-examples_2.11-2.4.0.jar localhost 9999
 
 ```
